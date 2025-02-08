@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class SwordAttack : MonoBehaviour
 {
+    public BossAttack bossAttack;
     private Animator _animator;
     private bool _firstSwipe = false;
 
@@ -38,6 +39,12 @@ public class SwordAttack : MonoBehaviour
         if(Input.GetMouseButtonDown(0))
         {
             _animator.SetTrigger("Attack");
+        }
+
+        if (Input.GetMouseButtonDown(1))
+        {
+            bossAttack.enabled = true;
+            enabled = false;
         }
     }
 }
