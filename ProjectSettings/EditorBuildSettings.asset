@@ -9,11 +9,11 @@ EditorBuildSettings:
     path: Assets/Scenes/MainMenu.unity
     guid: 6f96e7cac0f7bf140a6daa09af5e3030
   - enabled: 1
-    path: Assets/Scenes/GameScene.unity
-    guid: ae4b01da87f579a42acbab528c62a801
-  - enabled: 1
     path: Assets/Scenes/FollowWool.unity
     guid: b6b408731c669cf4daf9999191082398
+  - enabled: 1
+    path: Assets/Scenes/GameScene.unity
+    guid: ae4b01da87f579a42acbab528c62a801
   - enabled: 1
     path: Assets/Scenes/Platformer.unity
     guid: 8caaf4e78c9f75a46913dac2abc6fd7f

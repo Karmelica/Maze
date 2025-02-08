@@ -1,8 +1,11 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class MenuScript : MonoBehaviour
 {
+    private AudioScript _audioScript;
+    private LevelLoader _levelLoader;
     public Slider volumeSlider;
     public GameObject creditsPanel;
     public GameObject optionsPanel;
@@ -43,7 +46,8 @@ public class MenuScript : MonoBehaviour
     
     public void StartGame()
     {
-        UnityEngine.SceneManagement.SceneManager.LoadScene("GameScene");
+        _levelLoader.LoadNextLevel();
+        _audioScript.PlayMusic(1);
     }
 
     public void QuitGame()
@@ -54,5 +58,11 @@ public class MenuScript : MonoBehaviour
     private void Awake()
     {
         volumeSlider.value = PlayerPrefs.GetFloat("Volume", 1);
+    }
+
+    private void Start()
+    {
+        _audioScript = AudioScript.instance;
+        _levelLoader = LevelLoader.instance;
     }
 }

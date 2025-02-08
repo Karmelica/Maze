@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,6 +11,22 @@ public class PlayerControllerFlat : MonoBehaviour
     private Rigidbody2D rb;
     //private Animator animator;
     private SpriteRenderer spriteRenderer;
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if(other.CompareTag("MovingPlatform"))
+        {
+            transform.parent = other.transform;
+        }
+    }
+    
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if(other.CompareTag("MovingPlatform"))
+        {
+            transform.parent = null;
+        }
+    }
 
     void Start()
     {

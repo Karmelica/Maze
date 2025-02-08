@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - Ground
+  - MovingPlatform
+  - Sword
+  - Enemy
   layers:
   - Default
   - TransparentFX
@@ -12,7 +15,7 @@ TagManager:
   - Box
   - Water
   - UI
-  - 
+  - Player
   - 
   - 
   - 

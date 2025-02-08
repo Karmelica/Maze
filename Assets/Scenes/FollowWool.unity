@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.30692244, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -210,7 +210,7 @@ MeshCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 305987277}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 68b36b97e21909a4cb226e25b0368d21, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -392,7 +392,7 @@ GameObject:
   - component: {fileID: 1708050326}
   - component: {fileID: 1708050325}
   m_Layer: 0
-  m_Name: Capsule
+  m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -410,10 +410,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6266966b4f71ed4c943e9370146b02a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  jumpForce: 0
   moveSpeed: 500
   horizontalDrag: 1
-  minY: -60
-  maxY: 60
+  minY: -80
+  maxY: 80
 --- !u!54 &1708050326
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -634,7 +635,7 @@ MeshCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1981534550}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 68b36b97e21909a4cb226e25b0368d21, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
