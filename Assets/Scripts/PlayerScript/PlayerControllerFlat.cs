@@ -5,11 +5,12 @@ using UnityEngine;
 
 public class PlayerControllerFlat : MonoBehaviour
 {
+    private LevelLoader _loader;
     public float moveSpeed = 5f;
     public float jumpForce = 10f;
     private bool isGrounded;
     private Rigidbody2D rb;
-    //private Animator animator;
+    private Animator animator;
     private SpriteRenderer spriteRenderer;
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -17,6 +18,12 @@ public class PlayerControllerFlat : MonoBehaviour
         if(other.CompareTag("MovingPlatform"))
         {
             transform.parent = other.transform;
+        }
+
+        if (other.CompareTag("Hedge"))
+        {
+            other.gameObject.SetActive(false);
+            _loader.LoadNextLevel();
         }
     }
     
@@ -30,8 +37,9 @@ public class PlayerControllerFlat : MonoBehaviour
 
     void Start()
     {
+        _loader = LevelLoader.instance;
         rb = GetComponent<Rigidbody2D>();
-        //animator = GetComponent<Animator>();
+        animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
@@ -45,7 +53,7 @@ public class PlayerControllerFlat : MonoBehaviour
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
         }
 
-        //animator.SetFloat("Speed", Mathf.Abs(moveInput));
+        animator.SetFloat("Speed", Mathf.Abs(moveInput));
         spriteRenderer.flipX = moveInput < 0;
     }
 

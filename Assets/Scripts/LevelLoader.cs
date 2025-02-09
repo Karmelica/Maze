@@ -3,17 +3,25 @@ using System.Collections;
 using System.Timers;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class LevelLoader : MonoBehaviour
 {
     static public LevelLoader instance;
+    public bool lvl1Unlocked = false;
+    public bool lvl2Unlocked = false;
     public Slider loadingBar;
     public GameObject loadingScreen;
     
     public void LoadNextLevel()
     {
         StartCoroutine(LoadLevelAsync(SceneManager.GetActiveScene().buildIndex + 1));
+    }
+    
+    public void LoadLevel(int sceneIndex)
+    {
+        StartCoroutine(LoadLevelAsync(sceneIndex));
     }
 
    private IEnumerator LoadLevelAsync(int sceneIndex)

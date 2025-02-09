@@ -8,6 +8,10 @@ TagManager:
   - MovingPlatform
   - Sword
   - Enemy
+  - Chest
+  - Hedge
+  - Maze
+  - MazeFinish
   layers:
   - Default
   - TransparentFX

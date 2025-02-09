@@ -4,6 +4,10 @@ using UnityEngine.UI;
 
 public class MenuScript : MonoBehaviour
 {
+    private Image _lvl2Image;
+    public Sprite unlockedSprite;
+    public Button lvl2Button;
+    
     private AudioScript _audioScript;
     private LevelLoader _levelLoader;
     public Slider volumeSlider;
@@ -26,6 +30,11 @@ public class MenuScript : MonoBehaviour
     
     public void LevelSelect()
     {
+        if(_levelLoader.lvl2Unlocked)
+        {
+            _lvl2Image.sprite = unlockedSprite;
+            lvl2Button.interactable = true;
+        }
         mainPanel.SetActive(false);
         levelSelectPanel.SetActive(true);
     }
@@ -46,8 +55,8 @@ public class MenuScript : MonoBehaviour
     
     public void StartGame()
     {
-        _levelLoader.LoadNextLevel();
         _audioScript.PlayMusic(1);
+        _levelLoader.LoadNextLevel();
     }
 
     public void QuitGame()
@@ -62,6 +71,7 @@ public class MenuScript : MonoBehaviour
 
     private void Start()
     {
+        _lvl2Image = lvl2Button.GetComponent<Image>();
         _audioScript = AudioScript.instance;
         _levelLoader = LevelLoader.instance;
     }

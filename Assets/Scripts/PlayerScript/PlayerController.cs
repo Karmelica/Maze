@@ -1,7 +1,14 @@
+using System;
+using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.Video;
 
 public class PlayerController : MonoBehaviour
 {
+    public VideoPlayer videoPlayer;
+    private AudioScript _audioScript;
+    private LevelLoader _loader;
     static public bool canBeControlled = true;
     private Camera _lookCamera;
     private Rigidbody _rb;
@@ -11,7 +18,51 @@ public class PlayerController : MonoBehaviour
     public float minY = -80f; // minimalny kąt obrotu w osi Y
     public float maxY = 80f;  // maksymalny kąt obrotu w osi Y
     private float _currentXRotation; // bieżący kąt obrotu w osi X
+
+    private IEnumerator CutScene()
+    {
+        if(videoPlayer != null)
+        {
+            canBeControlled = false;
+            videoPlayer.enabled = true;
+            videoPlayer.Play();
+            yield return new WaitForSeconds((float)videoPlayer.clip.length);
+            videoPlayer.Stop();
+            videoPlayer.enabled = false;
+            canBeControlled = true;
+            SceneManager.LoadScene(2);
+        }
+    }
     
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Chest"))
+        {
+            other.gameObject.SetActive(false);
+        }
+
+        if (other.CompareTag("Hedge"))
+        {
+            other.gameObject.SetActive(false);
+            _loader.LoadNextLevel();
+        }
+
+        if (other.CompareTag("Maze"))
+        {
+            other.gameObject.SetActive(false);
+            _audioScript.PlayMusic(0);
+            StartCoroutine(CutScene());
+        }
+
+        if (other.CompareTag("MazeFinish"))
+        {
+            _loader.lvl2Unlocked = true;
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            SceneManager.LoadScene(0);
+        }
+    }
+
     private void Jump()
     {
         _rb.AddForce(new Vector3(0, jumpForce, 0));
@@ -75,5 +126,7 @@ public class PlayerController : MonoBehaviour
         Cursor.visible = false;
         _lookCamera = GetComponentInChildren<Camera>();
         _rb = GetComponent<Rigidbody>();
+        _loader = LevelLoader.instance;
+        _audioScript = AudioScript.instance;
     }
 }
