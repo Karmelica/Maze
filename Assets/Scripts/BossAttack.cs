@@ -20,6 +20,11 @@ public class BossAttack : MonoBehaviour
         lineRenderer.SetPosition(0, attackPoint.position);
     }
 
+    private void OnDisable()
+    {
+        lineRenderer.enabled = false;
+    }
+
     private void Update()
     {
         if(attackPoint !=null)

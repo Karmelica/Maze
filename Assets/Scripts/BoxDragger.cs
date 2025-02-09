@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class BoxDragger : MonoBehaviour
 {
+    private AudioSource _audioSource;
     private Rigidbody _rb;
     private bool _isDragging;
     private Vector3 _dragOffset;
@@ -11,6 +12,7 @@ public class BoxDragger : MonoBehaviour
 
     private void Start()
     {
+        _audioSource = GetComponent<AudioSource>();
         _rb = GetComponent<Rigidbody>();
     }
 
@@ -22,19 +24,29 @@ public class BoxDragger : MonoBehaviour
             if (Physics.Raycast(ray, out var hit) && hit.transform == transform)
                 if (IsBoxInFrontOfPlayer() && IsBoxWithinDistance())
                 {
+                    _audioSource.Play();
                     _isDragging = true;
                     _dragOffset = transform.position - hit.point;
                 }
         }
 
-        if (Input.GetMouseButtonUp(0)) _isDragging = false;
+        if (Input.GetMouseButtonUp(0))
+        {
+            _isDragging = false;
+            _audioSource.Stop();
+        }
+        
     }
 
     private void FixedUpdate()
     {
         if (_isDragging)
         {
-            if(!IsBoxWithinDistance() || !IsBoxInFrontOfPlayer()) _isDragging = false;
+            if (!IsBoxWithinDistance() || !IsBoxInFrontOfPlayer())
+            {
+                _isDragging = false;
+                _audioSource.Stop();
+            }
             var playerMovement = new Vector3(0, 0, Input.GetAxis("Vertical"));
             if (playerMovement.magnitude > 0)
             {

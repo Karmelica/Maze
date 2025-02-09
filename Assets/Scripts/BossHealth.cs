@@ -7,6 +7,7 @@ using UnityEngine.UI;
 
 public class BossHealth : MonoBehaviour
 {
+    public BossAttack bossAttack;
     private LevelLoader _levelLoader;
     public Transform player;
     public Slider bossHP;
@@ -23,9 +24,6 @@ public class BossHealth : MonoBehaviour
     private void OnDisable()
     {
         _levelLoader.lvl1Unlocked = true;
-        SceneManager.LoadScene(0);
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
     }
 
     // Update is called once per frame
@@ -39,6 +37,7 @@ public class BossHealth : MonoBehaviour
             if (currentBossHP <= 2)
             {
                 gameObject.SetActive(false);
+                bossAttack.enabled = false;
             }
         }
     }

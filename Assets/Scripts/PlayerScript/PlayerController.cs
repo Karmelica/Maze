@@ -1,11 +1,19 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using UnityEngine.Video;
 
 public class PlayerController : MonoBehaviour
 {
+    public List<Sprite> dialogues;
+    public Image dialogueImage;
+    
+    public AudioClip jumpSound;
+    public AudioClip walkSound;
+    private AudioSource _audioSource;
     public VideoPlayer videoPlayer;
     private AudioScript _audioScript;
     private LevelLoader _loader;
@@ -19,6 +27,37 @@ public class PlayerController : MonoBehaviour
     public float maxY = 80f;  // maksymalny kąt obrotu w osi Y
     private float _currentXRotation; // bieżący kąt obrotu w osi X
 
+    private void Dialogue()
+    {
+        StartCoroutine(DisplayDialogue());
+    }
+
+    private IEnumerator DisplayDialogue()
+    {
+        int dialogueIndex = 0;
+        dialogueImage.enabled = true;
+        canBeControlled = false;
+
+        while (dialogueIndex < dialogues.Count)
+        {
+            dialogueImage.sprite = dialogues[dialogueIndex];
+
+            // Czekaj na naciśnięcie spacji
+            while (!Input.GetKeyDown(KeyCode.Space))
+            {
+                yield return null;
+            }
+
+            // Dodaj małe opóźnienie, aby uniknąć natychmiastowego wykrycia ponownego naciśnięcia spacji
+            yield return new WaitForSeconds(0.1f);
+
+            dialogueIndex++;
+        }
+
+        dialogueImage.enabled = false;
+        canBeControlled = true;
+    }
+    
     private IEnumerator CutScene()
     {
         if(videoPlayer != null)
@@ -30,7 +69,15 @@ public class PlayerController : MonoBehaviour
             videoPlayer.Stop();
             videoPlayer.enabled = false;
             canBeControlled = true;
-            SceneManager.LoadScene(2);
+            if (SceneManager.GetActiveScene().buildIndex == 1)
+            {
+                _loader.LoadLevel(2);
+            }
+            else if (SceneManager.GetActiveScene().buildIndex == 5)
+            {
+                _loader.LoadLevel(0);
+            }
+            
         }
     }
     
@@ -39,6 +86,7 @@ public class PlayerController : MonoBehaviour
         if (other.CompareTag("Chest"))
         {
             other.gameObject.SetActive(false);
+            Dialogue();
         }
 
         if (other.CompareTag("Hedge"))
@@ -66,6 +114,8 @@ public class PlayerController : MonoBehaviour
     private void Jump()
     {
         _rb.AddForce(new Vector3(0, jumpForce, 0));
+        _audioSource.clip = jumpSound;
+        _audioSource.Play();
     }
 
     private void Movement()
@@ -94,6 +144,7 @@ public class PlayerController : MonoBehaviour
     {
         if(canBeControlled)
         {
+            Look();
             Movement();
             ApplyHorizontalDrag();
         }
@@ -109,23 +160,37 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(_rb.velocity.magnitude > 0.1f && !_audioSource.isPlaying)
+        {
+            _audioSource.clip = walkSound;
+            _audioSource.Play();
+        }
+        else if(_rb.velocity.magnitude < 0.1f && _audioSource.isPlaying)
+        {
+            _audioSource.Stop();
+        }
         if(canBeControlled)
         {
-            Look();
             if (Physics.Raycast(transform.position, Vector3.down, 1.1f))
             {
                 if (Input.GetKeyDown(KeyCode.Space)) Jump();
             }
+        }
+        if(!canBeControlled)
+        {
+            _rb.velocity = Vector3.zero;
         }
     }
 
     // Start is called before the first frame update
     void Start()
     {
+        canBeControlled = true;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         _lookCamera = GetComponentInChildren<Camera>();
         _rb = GetComponent<Rigidbody>();
+        _audioSource = GetComponent<AudioSource>();
         _loader = LevelLoader.instance;
         _audioScript = AudioScript.instance;
     }

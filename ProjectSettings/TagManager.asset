@@ -12,6 +12,7 @@ TagManager:
   - Hedge
   - Maze
   - MazeFinish
+  - Final
   layers:
   - Default
   - TransparentFX

@@ -52,6 +52,11 @@ public class MenuScript : MonoBehaviour
         AudioListener.volume = volumeSlider.value;
         PlayerPrefs.SetFloat("Volume", volumeSlider.value);
     }
+
+    public void Level2()
+    {
+        _levelLoader.LoadLevel(5);
+    }
     
     public void StartGame()
     {

@@ -38,12 +38,16 @@ public class Slicer : MonoBehaviour
     
     private void MoveTowardsPlayer()
     {
-        transform.position = Vector3.MoveTowards(transform.position, playerCamera.transform.position, 0.01f);
+        transform.position = Vector3.MoveTowards(transform.position, playerCamera.transform.position, 0.1f);
+    }
+
+    private void FixedUpdate()
+    {
+        MoveTowardsPlayer();
     }
 
     private void Update()
     {
-        MoveTowardsPlayer();
         transform.LookAt(playerCamera.transform);
     }
     
